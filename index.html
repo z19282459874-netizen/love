@@ -5,253 +5,109 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>你有101个优点</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=ZCOOL+KuaiLe&display=swap');
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    background: linear-gradient(135deg, #fff0f5 0%, #ffe4e1 25%, #ffd6e0 50%, #ffc0cb 75%, #ffb6c1 100%);
-    background-size: 400% 400%;
-    animation: bgShift 12s ease-in-out infinite;
-    font-family: 'Noto Serif SC', 'STSong', 'SimSun', serif;
+    background: linear-gradient(160deg, #fff5f5 0%, #fff0f3 30%, #ffe4e6 60%, #fce4ec 100%);
+    font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
     cursor: default;
     user-select: none;
     -webkit-user-select: none;
     position: relative;
   }
 
-  @keyframes bgShift {
-    0%, 100% { background-position: 0% 50%; }
-    25% { background-position: 100% 0%; }
-    50% { background-position: 100% 100%; }
-    75% { background-position: 0% 100%; }
-  }
-
-  /* Floating petals */
-  .petal {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background: radial-gradient(circle, #ffb6c1 0%, #ff69b4 100%);
-    border-radius: 50% 0 50% 50%;
-    opacity: 0;
-    pointer-events: none;
-    animation: petalFall linear forwards;
-  }
-
-  @keyframes petalFall {
-    0% { opacity: 0; transform: translate(0, -10vh) rotate(0deg) scale(0); }
-    10% { opacity: 0.8; transform: translate(10px, 0vh) rotate(45deg) scale(1); }
-    100% { opacity: 0; transform: translate(30px, 110vh) rotate(720deg) scale(0.3); }
-  }
-
-  /* Main title */
   .main-title {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: clamp(2rem, 5vw, 4.5rem);
-    font-weight: 900;
-    color: #d6336c;
-    text-shadow: 0 0 30px rgba(214, 51, 108, 0.3), 0 4px 8px rgba(0,0,0,0.08);
+    font-size: clamp(2rem, 4.5vw, 4rem);
+    font-weight: 700;
+    color: #c9406b;
     z-index: 100;
     text-align: center;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.12em;
     white-space: nowrap;
-    animation: titleGlow 3s ease-in-out infinite;
     pointer-events: none;
-  }
-
-  @keyframes titleGlow {
-    0%, 100% { text-shadow: 0 0 20px rgba(214, 51, 108, 0.2), 0 4px 8px rgba(0,0,0,0.08); }
-    50% { text-shadow: 0 0 50px rgba(255, 105, 180, 0.6), 0 0 80px rgba(255, 105, 180, 0.3), 0 4px 8px rgba(0,0,0,0.08); }
+    transition: opacity 1.2s ease, transform 1.2s ease;
   }
 
   .title-heart {
     display: inline-block;
-    animation: heartBeat 1.2s ease-in-out infinite;
-    color: #ff4473;
+    color: #e0527a;
   }
 
-  @keyframes heartBeat {
-    0%, 100% { transform: scale(1); }
-    15% { transform: scale(1.25); }
-    30% { transform: scale(1); }
-    45% { transform: scale(1.2); }
-    60% { transform: scale(1); }
-  }
-
-  /* Merit word */
   .merit {
     position: absolute;
-    font-size: clamp(0.8rem, 1.6vw, 1.3rem);
-    font-weight: 700;
-    color: #d6336c;
+    font-size: clamp(0.75rem, 1.4vw, 1.15rem);
+    font-weight: 600;
+    color: #c9406b;
     pointer-events: none;
     z-index: 50;
     opacity: 0;
-    transform: scale(0);
-    text-shadow: 0 2px 8px rgba(214, 51, 108, 0.15);
-    transition: none;
+    transition: opacity 0.6s ease, transform 0.6s ease;
   }
 
-  .merit.pop {
-    animation: meritPop 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  .merit.show {
+    opacity: 0.85;
   }
 
-  @keyframes meritPop {
-    0% { opacity: 0; transform: scale(0) rotate(-20deg); }
-    60% { opacity: 1; transform: scale(1.35) rotate(5deg); }
-    80% { transform: scale(0.9) rotate(-2deg); }
-    100% { opacity: 1; transform: scale(1) rotate(0deg); }
-  }
-
-  .merit.stay {
-    opacity: 1;
-    transform: scale(1);
-    animation: meritFloat 4s ease-in-out infinite;
-  }
-
-  @keyframes meritFloat {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-8px) scale(1.05); }
-  }
-
-  .merit.glow {
-    animation: meritGlow 1.8s ease-in-out forwards;
-  }
-
-  @keyframes meritGlow {
-    0% { opacity: 1; transform: scale(1); text-shadow: 0 0 0px rgba(255, 105, 180, 0); }
-    60% { opacity: 1; transform: scale(1.2); text-shadow: 0 0 25px rgba(255, 105, 180, 0.9), 0 0 50px rgba(255, 20, 147, 0.5); color: #ff1493; }
-    100% { opacity: 0; transform: scale(1.5); text-shadow: 0 0 60px rgba(255, 20, 147, 1), 0 0 100px rgba(255, 105, 180, 0.8); color: #ff69b4; }
-  }
-
-  .merit.fadeout {
-    animation: meritFadeOut 0.9s ease-in forwards;
-  }
-
-  @keyframes meritFadeOut {
-    0% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(1.3); }
-    100% { opacity: 0; transform: scale(0) rotate(30deg); }
-  }
-
-  /* Background overlay for transition */
-  .bg-overlay {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-    z-index: 90;
-    background: radial-gradient(circle at center, rgba(255,182,193,0.5) 0%, rgba(255,192,203,0) 70%);
+  .merit.hide {
     opacity: 0;
-    transition: opacity 2s ease-in-out;
+    transition: opacity 0.8s ease;
   }
 
-  .bg-overlay.active {
-    opacity: 1;
-  }
-
-  .bg-whiten {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-    z-index: 95;
-    background: white;
-    opacity: 0;
-    transition: opacity 0.6s ease-in-out;
-  }
-
-  .bg-whiten.active {
-    opacity: 0.7;
-  }
-
-  /* Love you text */
   .love-text {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    font-size: clamp(3rem, 8vw, 7rem);
-    font-weight: 900;
-    color: #ff1744;
+    transform: translate(-50%, -50%);
+    font-size: clamp(2.5rem, 7vw, 6rem);
+    font-weight: 700;
+    color: #d6336c;
     z-index: 200;
     text-align: center;
     pointer-events: none;
     opacity: 0;
-    text-shadow: 0 0 60px rgba(255, 23, 68, 0.5), 0 0 120px rgba(255, 105, 180, 0.4);
+    transition: opacity 1.5s ease;
   }
 
   .love-text.show {
-    animation: loveAppear 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    opacity: 1;
   }
 
-  @keyframes loveAppear {
-    0% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(-30deg); }
-    30% { opacity: 0.7; }
-    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.3) rotate(5deg); }
-    70% { transform: translate(-50%, -50%) scale(0.9) rotate(-2deg); }
-    85% { transform: translate(-50%, -50%) scale(1.05) rotate(1deg); }
-    100% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
-  }
-
-  /* Big hearts */
-  .big-heart {
-    position: fixed;
-    pointer-events: none;
-    z-index: 180;
-    font-size: clamp(2rem, 4vw, 4rem);
-    opacity: 0;
-    animation: bigHeartFloat 4s ease-out forwards;
-  }
-
-  @keyframes bigHeartFloat {
-    0% { opacity: 0; transform: translateY(0) scale(0); }
-    20% { opacity: 0.9; transform: translateY(-30px) scale(1.4); }
-    40% { opacity: 0.7; transform: translateY(-80px) scale(1.1); }
-    100% { opacity: 0; transform: translateY(-200px) scale(0.2); }
-  }
-
-  /* Particles */
-  .particle {
-    position: fixed;
-    pointer-events: none;
-    z-index: 190;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    opacity: 0;
-  }
-
-  .particle.burst {
-    animation: particleBurst 2s ease-out forwards;
-  }
-
-  @keyframes particleBurst {
-    0% { opacity: 1; transform: translate(0, 0) scale(1); }
-    100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0); }
-  }
-
-  /* Counter */
   .counter {
     position: fixed;
-    bottom: 30px;
-    right: 40px;
-    font-size: 1.2rem;
-    color: #e64980;
+    bottom: 28px;
+    right: 36px;
+    font-size: 1rem;
+    color: #d0899e;
     z-index: 300;
-    font-weight: 700;
-    opacity: 0.6;
+    font-weight: 500;
     pointer-events: none;
-    transition: all 0.3s;
+    letter-spacing: 0.05em;
+  }
+
+  /* Petals */
+  .petal {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: radial-gradient(circle, #ffccd5 0%, #f0a0b8 100%);
+    border-radius: 50% 0 50% 50%;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 10;
+    animation: petalFall linear forwards;
+  }
+
+  @keyframes petalFall {
+    0%   { opacity: 0; transform: translate(0, -5vh) rotate(0deg) scale(0.3); }
+    8%   { opacity: 0.6; transform: translate(6px, 0vh) rotate(30deg) scale(1); }
+    100% { opacity: 0; transform: translate(20px, 110vh) rotate(540deg) scale(0.2); }
   }
 </style>
 </head>
@@ -263,13 +119,10 @@
 
 <div class="love-text" id="loveText">我爱你</div>
 
-<div class="bg-overlay" id="bgOverlay"></div>
-<div class="bg-whiten" id="bgWhiten"></div>
-<div class="counter" id="counter"></div>
+<div class="counter" id="counter">0 / 101</div>
 
 <script>
 (function() {
-  // ---- 101 Merits ----
   const merits = [
     '温柔', '善良', '聪明', '可爱', '体贴', '勇敢', '坚强', '乐观', '真诚', '大方',
     '细心', '耐心', '幽默', '风趣', '深情', '专一', '可靠', '踏实', '勤奋', '努力',
@@ -286,22 +139,19 @@
     '温暖如春', '柔情似水', '热情如火', '纯洁如雪', '清新如风', '灵动如溪'
   ];
 
-  const total = merits.length;
-  const container = document.body;
-  const mainTitle = document.getElementById('mainTitle');
-  const loveText = document.getElementById('loveText');
-  const counter = document.getElementById('counter');
-  const bgOverlay = document.getElementById('bgOverlay');
-  const bgWhiten = document.getElementById('bgWhiten');
+  var total = merits.length; // 101
+  var container = document.body;
+  var mainTitle = document.getElementById('mainTitle');
+  var loveText = document.getElementById('loveText');
+  var counter = document.getElementById('counter');
 
-  // Keep track of created merit elements and occupied positions
-  const meritEls = [];
-  const occupiedAreas = []; // {x, y, w, h}
+  var meritEls = [];
+  var occupiedAreas = [];
 
-  // ---- Utility: check overlap ----
   function overlaps(rect, areas, padding) {
-    padding = padding || 20;
-    for (let a of areas) {
+    padding = padding || 22;
+    for (var i = 0; i < areas.length; i++) {
+      var a = areas[i];
       if (!(rect.x + rect.w + padding < a.x || a.x + a.w + padding < rect.x ||
             rect.y + rect.h + padding < a.y || a.y + a.h + padding < rect.y)) {
         return true;
@@ -310,183 +160,83 @@
     return false;
   }
 
-  // ---- Utility: get random position avoiding center and edges ----
-  function getRandomPosition(elWidth, elHeight) {
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
+  function getPosition(elWidth, elHeight) {
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+    var cx = vw / 2;
+    var cy = vh / 2;
+    var safeRX = Math.max(160, vw * 0.15);
+    var safeRY = Math.max(80, vh * 0.08);
+    var margin = 30;
 
-    // Reserve center area for main title
-    const centerCX = vw / 2;
-    const centerCY = vh / 2;
-    const safeRadiusX = Math.max(160, vw * 0.15);
-    const safeRadiusY = Math.max(80, vh * 0.08);
-
-    const margin = 30;
-    const maxAttempts = 200;
-
-    for (let attempt = 0; attempt < maxAttempts; attempt++) {
-      const x = margin + Math.random() * (vw - elWidth - margin * 2);
-      const y = margin + Math.random() * (vh - elHeight - margin * 2);
-
-      // Check distance from center
-      const cx = x + elWidth / 2;
-      const cy = y + elHeight / 2;
-      const dx = (cx - centerCX) / safeRadiusX;
-      const dy = (cy - centerCY) / safeRadiusY;
-      if (dx * dx + dy * dy < 1.2) continue; // too close to center
-
-      const rect = { x, y, w: elWidth, h: elHeight };
-      if (!overlaps(rect, occupiedAreas, 15)) {
-        return { x, y };
+    for (var attempt = 0; attempt < 200; attempt++) {
+      var x = margin + Math.random() * (vw - elWidth - margin * 2);
+      var y = margin + Math.random() * (vh - elHeight - margin * 2);
+      var mx = x + elWidth / 2;
+      var my = y + elHeight / 2;
+      var dx = (mx - cx) / safeRX;
+      var dy = (my - cy) / safeRY;
+      if (dx * dx + dy * dy < 1.2) continue;
+      var rect = { x: x, y: y, w: elWidth, h: elHeight };
+      if (!overlaps(rect, occupiedAreas, 14)) {
+        return { x: x, y: y };
       }
     }
 
-    // Fallback: just return any position not in center
-    let x, y;
+    var x, y;
     do {
       x = margin + Math.random() * (vw - elWidth - margin * 2);
       y = margin + Math.random() * (vh - elHeight - margin * 2);
-      const cx = x + elWidth / 2;
-      const cy = y + elHeight / 2;
-      const dx = (cx - centerCX) / safeRadiusX;
-      const dy = (cy - centerCY) / safeRadiusY;
-      if (dx * dx + dy * dy >= 0.8) break;
+      var mx2 = x + elWidth / 2;
+      var my2 = y + elHeight / 2;
+      var dx2 = (mx2 - cx) / safeRX;
+      var dy2 = (my2 - cy) / safeRY;
+      if (dx2 * dx2 + dy2 * dy2 >= 0.8) break;
     } while (true);
-    return { x, y };
+    return { x: x, y: y };
   }
 
-  // ---- Create petals ----
-  function createPetal() {
-    const petal = document.createElement('div');
-    petal.className = 'petal';
-    petal.style.left = Math.random() * 100 + '%';
-    petal.style.top = -(Math.random() * 20 + 5) + 'px';
-    petal.style.animationDuration = (Math.random() * 6 + 6) + 's';
-    petal.style.animationDelay = Math.random() * 3 + 's';
-    petal.style.width = (Math.random() * 16 + 8) + 'px';
-    petal.style.height = (Math.random() * 16 + 8) + 'px';
-    const colors = ['#ffb6c1', '#ffc0cb', '#ffd1dc', '#ffe4e1', '#ff99b3', '#ff85a2'];
-    petal.style.background = 'radial-gradient(circle, ' + colors[Math.floor(Math.random()*colors.length)] + ' 0%, #ff69b4 100%)';
-    container.appendChild(petal);
-
-    petal.addEventListener('animationend', function() {
-      if (petal.parentNode) petal.parentNode.removeChild(petal);
-    });
-  }
-
-  // Continuous petal rain
-  setInterval(function() {
-    if (document.querySelectorAll('.petal').length < 15) {
-      createPetal();
-    }
-  }, 800);
-
-  // Initial petals
-  for (let i = 0; i < 8; i++) {
-    setTimeout(function() { createPetal(); }, i * 400);
-  }
-
-  // ---- Create heart particles for the finale ----
-  function createParticles(cx, cy) {
-    const heartEmojis = ['❤️', '💕', '💖', '💗', '💝', '💘', '✨', '💫', '🌸', '🌺', '🌷', '💐'];
-    const colors = ['#ff1744', '#ff4081', '#ff80ab', '#ff4081', '#f50057', '#ff5252', '#ff6e6e'];
-
-    // Emoji hearts
-    for (let i = 0; i < 25; i++) {
-      setTimeout(function() {
-        const heart = document.createElement('div');
-        heart.className = 'big-heart';
-        heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
-        heart.style.left = (cx + (Math.random() - 0.5) * 500) + 'px';
-        heart.style.top = (cy + (Math.random() - 0.5) * 300) + 'px';
-        heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
-        heart.style.animationDelay = Math.random() * 0.8 + 's';
-        container.appendChild(heart);
-
-        heart.addEventListener('animationend', function() {
-          if (heart.parentNode) heart.parentNode.removeChild(heart);
-        });
-      }, i * 60);
-    }
-
-    // Color particles
-    for (let i = 0; i < 50; i++) {
-      setTimeout(function() {
-        const particle = document.createElement('div');
-        particle.className = 'particle burst';
-        const angle = Math.random() * Math.PI * 2;
-        const distance = Math.random() * 300 + 100;
-        particle.style.setProperty('--dx', Math.cos(angle) * distance + 'px');
-        particle.style.setProperty('--dy', Math.sin(angle) * distance + 'px');
-        particle.style.left = cx + 'px';
-        particle.style.top = cy + 'px';
-        particle.style.width = (Math.random() * 10 + 4) + 'px';
-        particle.style.height = particle.style.width;
-        particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        particle.style.boxShadow = '0 0 ' + (Math.random() * 10 + 4) + 'px ' + particle.style.backgroundColor;
-        particle.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's';
-        container.appendChild(particle);
-
-        particle.addEventListener('animationend', function() {
-          if (particle.parentNode) particle.parentNode.removeChild(particle);
-        });
-      }, i * 30);
-    }
-  }
-
-  // ---- Main animation sequence ----
   function startAnimation() {
-    counter.textContent = '0 / ' + total;
-    counter.style.opacity = '1';
+    var delayBetween = 130;
+    var initialDelay = 700;
 
-    const delayBetween = 120;
-    const initialDelay = 800;
-
-    for (let i = 0; i < total; i++) {
-      setTimeout(function() {
-        showMerit(i);
-      }, initialDelay + i * delayBetween);
+    for (var i = 0; i < total; i++) {
+      setTimeout((function(index) {
+        return function() { showMerit(index); };
+      })(i), initialDelay + i * delayBetween);
     }
 
-    // All merits shown: ~13 seconds in
-    // Wait 3.5s appreciation pause → 2s glow dissolve → 1.5s appear
-    const allShownTime = initialDelay + total * delayBetween;
-    const appreciationPause = 3500;  // let the viewer appreciate all 101 merits
-    const transitionTime = 2500;     // glow + dissolve phase
-    const totalTime = allShownTime + appreciationPause;
-
-    // Phase 1: after appreciation, begin the glow dissolve
-    setTimeout(showLoveFinale, totalTime);
+    // After all shown, wait 4 seconds, then transition
+    var allShown = initialDelay + total * delayBetween;
+    var pause = 4000;
+    setTimeout(transitionToLove, allShown + pause);
   }
 
   function showMerit(index) {
-    const el = document.createElement('div');
-    el.className = 'merit pop';
+    var el = document.createElement('div');
+    el.className = 'merit';
     el.textContent = merits[index];
 
-    // Estimate size before appending
     container.appendChild(el);
-    const rect = el.getBoundingClientRect();
-    const w = rect.width;
-    const h = rect.height;
+    var rect = el.getBoundingClientRect();
+    var w = rect.width;
+    var h = rect.height;
     container.removeChild(el);
 
-    const pos = getRandomPosition(w, h);
-
+    var pos = getPosition(w, h);
     el.style.left = pos.x + 'px';
     el.style.top = pos.y + 'px';
 
-    // Random color variation
-    const colors = [
-      '#d6336c', '#e64980', '#f06595', '#c2255c', '#a61e4d',
-      '#da77a0', '#e07a8b', '#cc5c72', '#b8445a', '#d9486c'
+    var colors = [
+      '#c9406b', '#d0557a', '#d4688a', '#b8355c', '#9e3a55',
+      '#cc6b85', '#c25a75', '#ba4e6a', '#d47890', '#bf5070'
     ];
     el.style.color = colors[Math.floor(Math.random() * colors.length)];
 
     container.appendChild(el);
 
-    // Record occupied area
-    const finalRect = el.getBoundingClientRect();
+    // Record position
+    var finalRect = el.getBoundingClientRect();
     occupiedAreas.push({
       x: finalRect.left,
       y: finalRect.top,
@@ -496,108 +246,81 @@
 
     meritEls.push(el);
 
+    // Fade in
+    requestAnimationFrame(function() {
+      el.classList.add('show');
+    });
+
     // Update counter
     counter.textContent = (index + 1) + ' / ' + total;
-    if (index + 1 === total) {
-      counter.style.opacity = '0';
+  }
+
+  function transitionToLove() {
+    // Fade out all merits
+    for (var i = 0; i < meritEls.length; i++) {
+      (function(el, idx) {
+        setTimeout(function() {
+          el.classList.add('hide');
+        }, idx * 12);
+      })(meritEls[i], i);
     }
 
-    // After pop animation, switch to floating
-    el.addEventListener('animationend', function(e) {
-      if (e.animationName === 'meritPop') {
-        el.classList.remove('pop');
-        el.classList.add('stay');
+    // Remove merits after fade
+    setTimeout(function() {
+      for (var i = 0; i < meritEls.length; i++) {
+        if (meritEls[i].parentNode) meritEls[i].parentNode.removeChild(meritEls[i]);
       }
-    });
-  }
+      meritEls = [];
+    }, 900);
 
-  function showLoveFinale() {
-    // ======= PHASE 1: Pink overlay fades in (0-2s) =======
-    bgOverlay.classList.add('active');
-
-    // ======= PHASE 2: Merits glow brighter one by one, like taking a deep breath (1.5-3.5s) =======
-    meritEls.forEach(function(el, i) {
-      setTimeout(function() {
-        el.classList.remove('stay');
-        el.classList.add('glow');
-      }, i * 16);  // slower stagger: 101 * 16ms ≈ 1.6s wave
-    });
-
-    // ======= PHASE 3: Title pulses, then white flash + all dissolve (2.5-3.5s) =======
+    // Fade out title
     setTimeout(function() {
-      // Title final strong pulse
-      mainTitle.style.transition = 'opacity 1s, transform 1s, text-shadow 1s';
-      mainTitle.style.textShadow = '0 0 60px rgba(255, 105, 180, 1), 0 0 120px rgba(255, 20, 147, 0.8)';
-      mainTitle.style.transform = 'translate(-50%, -50%) scale(1.15)';
-    }, 2200);
-
-    setTimeout(function() {
-      // White flash
-      bgWhiten.classList.add('active');
-      // Title shrinks and fades
       mainTitle.style.opacity = '0';
-      mainTitle.style.transform = 'translate(-50%, -50%) scale(0.3)';
-    }, 2800);
+      mainTitle.style.transform = 'translate(-50%, -50%) scale(0.9)';
+    }, 600);
 
+    // Hide title & counter, show love
     setTimeout(function() {
-      bgWhiten.classList.remove('active');
-    }, 3400);
-
-    // ======= PHASE 4: Clean up (3.5s) =======
-    setTimeout(function() {
-      meritEls.forEach(function(el) {
-        if (el.parentNode) el.parentNode.removeChild(el);
-      });
       mainTitle.style.display = 'none';
-    }, 3500);
-
-    // ======= PHASE 5: "我爱你" appears (4s) =======
-    setTimeout(function() {
-      bgOverlay.classList.remove('active');
+      counter.style.display = 'none';
       loveText.classList.add('show');
-
-      const cx = window.innerWidth / 2;
-      const cy = window.innerHeight / 2;
-      createParticles(cx, cy);
-
-      // Massive petal burst
-      for (let i = 0; i < 30; i++) {
-        setTimeout(function() { createPetal(); }, i * 60);
-      }
-    }, 4000);
-
-    // Second wave of particles
-    setTimeout(function() {
-      const cx = window.innerWidth / 2;
-      const cy = window.innerHeight / 2;
-      createParticles(cx, cy);
-    }, 5200);
-
-    // Third wave
-    setTimeout(function() {
-      const cx = window.innerWidth / 2;
-      const cy = window.innerHeight / 2;
-      createParticles(cx, cy);
-    }, 6400);
-
-    // Ongoing gentle petals
-    const petalInterval = setInterval(function() {
-      if (loveText.classList.contains('show')) {
-        for (let i = 0; i < 3; i++) {
-          setTimeout(function() { createPetal(); }, i * 300);
-        }
-      }
-    }, 4000);
+    }, 1800);
   }
 
-  // ---- Start on load ----
-  window.addEventListener('load', function() {
-    setTimeout(startAnimation, 600);
-  });
+  // ---- Petals ----
+  function createPetal() {
+    var petal = document.createElement('div');
+    petal.className = 'petal';
+    petal.style.left = (Math.random() * 96) + '%';
+    petal.style.top = -(Math.random() * 15 + 5) + 'px';
+    var dur = Math.random() * 8 + 10;
+    petal.style.animationDuration = dur + 's';
+    petal.style.animationDelay = Math.random() * 4 + 's';
+    var size = Math.random() * 12 + 8;
+    petal.style.width = size + 'px';
+    petal.style.height = size + 'px';
+    var colors = ['#ffccd5', '#ffdde4', '#ffc0cb', '#ffe4e1', '#f8c8d0', '#f5b8c5'];
+    petal.style.background = 'radial-gradient(circle, ' + colors[Math.floor(Math.random()*colors.length)] + ' 0%, #e898b0 100%)';
+    container.appendChild(petal);
+    petal.addEventListener('animationend', function() {
+      if (petal.parentNode) petal.parentNode.removeChild(petal);
+    });
+  }
 
-  // ---- Handle window resize ----
-  window.addEventListener('resize', function() {
-    // Keep title centered — handled by CSS
+  // Steady light petal rain
+  setInterval(function() {
+    if (document.querySelectorAll('.petal').length < 10) {
+      createPetal();
+    }
+  }, 1200);
+
+  // A few initial petals
+  for (var p = 0; p < 5; p++) {
+    setTimeout(function() { createPetal(); }, p * 500);
+  }
+
+  window.addEventListener('load', function() {
+    setTimeout(startAnimation, 500);
   });
 
 })();
