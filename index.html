@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>你有101个优点</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=ZCOOL+KuaiLe&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(135deg, #fff0f5 0%, #ffe4e1 25%, #ffd6e0 50%, #ffc0cb 75%, #ffb6c1 100%);
+    background-size: 400% 400%;
+    animation: bgShift 12s ease-in-out infinite;
+    font-family: 'Noto Serif SC', 'STSong', 'SimSun', serif;
+    cursor: default;
+    user-select: none;
+    -webkit-user-select: none;
+    position: relative;
+  }
+
+  @keyframes bgShift {
+    0%, 100% { background-position: 0% 50%; }
+    25% { background-position: 100% 0%; }
+    50% { background-position: 100% 100%; }
+    75% { background-position: 0% 100%; }
+  }
+
+  /* Floating petals */
+  .petal {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle, #ffb6c1 0%, #ff69b4 100%);
+    border-radius: 50% 0 50% 50%;
+    opacity: 0;
+    pointer-events: none;
+    animation: petalFall linear forwards;
+  }
+
+  @keyframes petalFall {
+    0% { opacity: 0; transform: translate(0, -10vh) rotate(0deg) scale(0); }
+    10% { opacity: 0.8; transform: translate(10px, 0vh) rotate(45deg) scale(1); }
+    100% { opacity: 0; transform: translate(30px, 110vh) rotate(720deg) scale(0.3); }
+  }
+
+  /* Main title */
+  .main-title {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(2rem, 5vw, 4.5rem);
+    font-weight: 900;
+    color: #d6336c;
+    text-shadow: 0 0 30px rgba(214, 51, 108, 0.3), 0 4px 8px rgba(0,0,0,0.08);
+    z-index: 100;
+    text-align: center;
+    letter-spacing: 0.15em;
+    white-space: nowrap;
+    animation: titleGlow 3s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes titleGlow {
+    0%, 100% { text-shadow: 0 0 20px rgba(214, 51, 108, 0.2), 0 4px 8px rgba(0,0,0,0.08); }
+    50% { text-shadow: 0 0 50px rgba(255, 105, 180, 0.6), 0 0 80px rgba(255, 105, 180, 0.3), 0 4px 8px rgba(0,0,0,0.08); }
+  }
+
+  .title-heart {
+    display: inline-block;
+    animation: heartBeat 1.2s ease-in-out infinite;
+    color: #ff4473;
+  }
+
+  @keyframes heartBeat {
+    0%, 100% { transform: scale(1); }
+    15% { transform: scale(1.25); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.2); }
+    60% { transform: scale(1); }
+  }
+
+  /* Merit word */
+  .merit {
+    position: absolute;
+    font-size: clamp(0.8rem, 1.6vw, 1.3rem);
+    font-weight: 700;
+    color: #d6336c;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0;
+    transform: scale(0);
+    text-shadow: 0 2px 8px rgba(214, 51, 108, 0.15);
+    transition: none;
+  }
+
+  .merit.pop {
+    animation: meritPop 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+
+  @keyframes meritPop {
+    0% { opacity: 0; transform: scale(0) rotate(-20deg); }
+    60% { opacity: 1; transform: scale(1.35) rotate(5deg); }
+    80% { transform: scale(0.9) rotate(-2deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); }
+  }
+
+  .merit.stay {
+    opacity: 1;
+    transform: scale(1);
+    animation: meritFloat 4s ease-in-out infinite;
+  }
+
+  @keyframes meritFloat {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-8px) scale(1.05); }
+  }
+
+  .merit.fadeout {
+    animation: meritFadeOut 0.8s ease-in forwards;
+  }
+
+  @keyframes meritFadeOut {
+    0% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+    100% { opacity: 0; transform: scale(0) rotate(30deg); }
+  }
+
+  /* Love you text */
+  .love-text {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 900;
+    color: #ff1744;
+    z-index: 200;
+    text-align: center;
+    pointer-events: none;
+    opacity: 0;
+    text-shadow: 0 0 60px rgba(255, 23, 68, 0.5), 0 0 120px rgba(255, 105, 180, 0.4);
+  }
+
+  .love-text.show {
+    animation: loveAppear 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+
+  @keyframes loveAppear {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(-30deg); }
+    30% { opacity: 0.7; }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.3) rotate(5deg); }
+    70% { transform: translate(-50%, -50%) scale(0.9) rotate(-2deg); }
+    85% { transform: translate(-50%, -50%) scale(1.05) rotate(1deg); }
+    100% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+  }
+
+  /* Big hearts */
+  .big-heart {
+    position: fixed;
+    pointer-events: none;
+    z-index: 180;
+    font-size: clamp(2rem, 4vw, 4rem);
+    opacity: 0;
+    animation: bigHeartFloat 4s ease-out forwards;
+  }
+
+  @keyframes bigHeartFloat {
+    0% { opacity: 0; transform: translateY(0) scale(0); }
+    20% { opacity: 0.9; transform: translateY(-30px) scale(1.4); }
+    40% { opacity: 0.7; transform: translateY(-80px) scale(1.1); }
+    100% { opacity: 0; transform: translateY(-200px) scale(0.2); }
+  }
+
+  /* Particles */
+  .particle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 190;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    opacity: 0;
+  }
+
+  .particle.burst {
+    animation: particleBurst 2s ease-out forwards;
+  }
+
+  @keyframes particleBurst {
+    0% { opacity: 1; transform: translate(0, 0) scale(1); }
+    100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0); }
+  }
+
+  /* Counter */
+  .counter {
+    position: fixed;
+    bottom: 30px;
+    right: 40px;
+    font-size: 1.2rem;
+    color: #e64980;
+    z-index: 300;
+    font-weight: 700;
+    opacity: 0.6;
+    pointer-events: none;
+    transition: all 0.3s;
+  }
+</style>
+</head>
+<body>
+
+<div class="main-title" id="mainTitle">
+  你有<span class="title-heart">❤</span>101个优点
+</div>
+
+<div class="love-text" id="loveText">我爱你</div>
+
+<div class="counter" id="counter"></div>
+
+<script>
+(function() {
+  // ---- 101 Merits ----
+  const merits = [
+    '温柔', '善良', '聪明', '可爱', '体贴', '勇敢', '坚强', '乐观', '真诚', '大方',
+    '细心', '耐心', '幽默', '风趣', '深情', '专一', '可靠', '踏实', '勤奋', '努力',
+    '美丽', '漂亮', '迷人', '优雅', '端庄', '知性', '气质', '魅力', '暖心', '阳光',
+    '开朗', '活泼', '灵动', '率真', '坦率', '正直', '忠诚', '执着', '坚韧', '包容',
+    '大度', '慷慨', '热心', '无私', '善解人意', '通情达理', '冰雪聪明', '心灵手巧',
+    '才华横溢', '多才多艺', '知书达理', '蕙质兰心', '温婉可人', '甜美可人', '楚楚动人',
+    '明眸皓齿', '笑靥如花', '国色天香', '倾国倾城', '沉鱼落雁', '闭月羞花', '天生丽质',
+    '眉清目秀', '亭亭玉立', '风姿绰约', '仪态万方', '温文尔雅', '落落大方', '秀外慧中',
+    '善解人意', '心思细腻', '观察入微', '见微知著', '随机应变', '处变不惊', '从容不迫',
+    '泰然自若', '胸有成竹', '运筹帷幄', '高瞻远瞩', '深谋远虑', '独具慧眼', '别出心裁',
+    '奇思妙想', '创意无限', '天马行空', '不拘一格', '独树一帜', '超凡脱俗', '与众不同',
+    '独一无二', '无可替代', '完美无瑕', '光芒万丈', '璀璨夺目', '熠熠生辉', '光彩照人',
+    '温暖如春', '柔情似水', '热情如火', '纯洁如雪', '清新如风', '灵动如溪'
+  ];
+
+  const total = merits.length;
+  const container = document.body;
+  const mainTitle = document.getElementById('mainTitle');
+  const loveText = document.getElementById('loveText');
+  const counter = document.getElementById('counter');
+
+  // Keep track of created merit elements and occupied positions
+  const meritEls = [];
+  const occupiedAreas = []; // {x, y, w, h}
+
+  // ---- Utility: check overlap ----
+  function overlaps(rect, areas, padding) {
+    padding = padding || 20;
+    for (let a of areas) {
+      if (!(rect.x + rect.w + padding < a.x || a.x + a.w + padding < rect.x ||
+            rect.y + rect.h + padding < a.y || a.y + a.h + padding < rect.y)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // ---- Utility: get random position avoiding center and edges ----
+  function getRandomPosition(elWidth, elHeight) {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    // Reserve center area for main title
+    const centerCX = vw / 2;
+    const centerCY = vh / 2;
+    const safeRadiusX = Math.max(160, vw * 0.15);
+    const safeRadiusY = Math.max(80, vh * 0.08);
+
+    const margin = 30;
+    const maxAttempts = 200;
+
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      const x = margin + Math.random() * (vw - elWidth - margin * 2);
+      const y = margin + Math.random() * (vh - elHeight - margin * 2);
+
+      // Check distance from center
+      const cx = x + elWidth / 2;
+      const cy = y + elHeight / 2;
+      const dx = (cx - centerCX) / safeRadiusX;
+      const dy = (cy - centerCY) / safeRadiusY;
+      if (dx * dx + dy * dy < 1.2) continue; // too close to center
+
+      const rect = { x, y, w: elWidth, h: elHeight };
+      if (!overlaps(rect, occupiedAreas, 15)) {
+        return { x, y };
+      }
+    }
+
+    // Fallback: just return any position not in center
+    let x, y;
+    do {
+      x = margin + Math.random() * (vw - elWidth - margin * 2);
+      y = margin + Math.random() * (vh - elHeight - margin * 2);
+      const cx = x + elWidth / 2;
+      const cy = y + elHeight / 2;
+      const dx = (cx - centerCX) / safeRadiusX;
+      const dy = (cy - centerCY) / safeRadiusY;
+      if (dx * dx + dy * dy >= 0.8) break;
+    } while (true);
+    return { x, y };
+  }
+
+  // ---- Create petals ----
+  function createPetal() {
+    const petal = document.createElement('div');
+    petal.className = 'petal';
+    petal.style.left = Math.random() * 100 + '%';
+    petal.style.top = -(Math.random() * 20 + 5) + 'px';
+    petal.style.animationDuration = (Math.random() * 6 + 6) + 's';
+    petal.style.animationDelay = Math.random() * 3 + 's';
+    petal.style.width = (Math.random() * 16 + 8) + 'px';
+    petal.style.height = (Math.random() * 16 + 8) + 'px';
+    const colors = ['#ffb6c1', '#ffc0cb', '#ffd1dc', '#ffe4e1', '#ff99b3', '#ff85a2'];
+    petal.style.background = 'radial-gradient(circle, ' + colors[Math.floor(Math.random()*colors.length)] + ' 0%, #ff69b4 100%)';
+    container.appendChild(petal);
+
+    petal.addEventListener('animationend', function() {
+      if (petal.parentNode) petal.parentNode.removeChild(petal);
+    });
+  }
+
+  // Continuous petal rain
+  setInterval(function() {
+    if (document.querySelectorAll('.petal').length < 15) {
+      createPetal();
+    }
+  }, 800);
+
+  // Initial petals
+  for (let i = 0; i < 8; i++) {
+    setTimeout(function() { createPetal(); }, i * 400);
+  }
+
+  // ---- Create heart particles for the finale ----
+  function createParticles(cx, cy) {
+    const heartEmojis = ['❤️', '💕', '💖', '💗', '💝', '💘', '✨', '💫', '🌸', '🌺', '🌷', '💐'];
+    const colors = ['#ff1744', '#ff4081', '#ff80ab', '#ff4081', '#f50057', '#ff5252', '#ff6e6e'];
+
+    // Emoji hearts
+    for (let i = 0; i < 25; i++) {
+      setTimeout(function() {
+        const heart = document.createElement('div');
+        heart.className = 'big-heart';
+        heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+        heart.style.left = (cx + (Math.random() - 0.5) * 500) + 'px';
+        heart.style.top = (cy + (Math.random() - 0.5) * 300) + 'px';
+        heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+        heart.style.animationDelay = Math.random() * 0.8 + 's';
+        container.appendChild(heart);
+
+        heart.addEventListener('animationend', function() {
+          if (heart.parentNode) heart.parentNode.removeChild(heart);
+        });
+      }, i * 60);
+    }
+
+    // Color particles
+    for (let i = 0; i < 50; i++) {
+      setTimeout(function() {
+        const particle = document.createElement('div');
+        particle.className = 'particle burst';
+        const angle = Math.random() * Math.PI * 2;
+        const distance = Math.random() * 300 + 100;
+        particle.style.setProperty('--dx', Math.cos(angle) * distance + 'px');
+        particle.style.setProperty('--dy', Math.sin(angle) * distance + 'px');
+        particle.style.left = cx + 'px';
+        particle.style.top = cy + 'px';
+        particle.style.width = (Math.random() * 10 + 4) + 'px';
+        particle.style.height = particle.style.width;
+        particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        particle.style.boxShadow = '0 0 ' + (Math.random() * 10 + 4) + 'px ' + particle.style.backgroundColor;
+        particle.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's';
+        container.appendChild(particle);
+
+        particle.addEventListener('animationend', function() {
+          if (particle.parentNode) particle.parentNode.removeChild(particle);
+        });
+      }, i * 30);
+    }
+  }
+
+  // ---- Main animation sequence ----
+  function startAnimation() {
+    // Show counter
+    counter.textContent = '0 / ' + total;
+    counter.style.opacity = '1';
+
+    // Create all merit elements first, then animate them one by one
+    const delayBetween = 120; // ms between each merit appearing
+    const initialDelay = 800; // ms before first merit
+
+    for (let i = 0; i < total; i++) {
+      setTimeout(function() {
+        showMerit(i);
+      }, initialDelay + i * delayBetween);
+    }
+
+    // After all merits shown, wait then transition to "我爱你"
+    const totalTime = initialDelay + total * delayBetween + 1800;
+    setTimeout(showLoveFinale, totalTime);
+  }
+
+  function showMerit(index) {
+    const el = document.createElement('div');
+    el.className = 'merit pop';
+    el.textContent = merits[index];
+
+    // Estimate size before appending
+    container.appendChild(el);
+    const rect = el.getBoundingClientRect();
+    const w = rect.width;
+    const h = rect.height;
+    container.removeChild(el);
+
+    const pos = getRandomPosition(w, h);
+
+    el.style.left = pos.x + 'px';
+    el.style.top = pos.y + 'px';
+
+    // Random color variation
+    const colors = [
+      '#d6336c', '#e64980', '#f06595', '#c2255c', '#a61e4d',
+      '#da77a0', '#e07a8b', '#cc5c72', '#b8445a', '#d9486c'
+    ];
+    el.style.color = colors[Math.floor(Math.random() * colors.length)];
+
+    container.appendChild(el);
+
+    // Record occupied area
+    const finalRect = el.getBoundingClientRect();
+    occupiedAreas.push({
+      x: finalRect.left,
+      y: finalRect.top,
+      w: finalRect.width,
+      h: finalRect.height
+    });
+
+    meritEls.push(el);
+
+    // Update counter
+    counter.textContent = (index + 1) + ' / ' + total;
+    if (index + 1 === total) {
+      counter.style.opacity = '0';
+    }
+
+    // After pop animation, switch to floating
+    el.addEventListener('animationend', function(e) {
+      if (e.animationName === 'meritPop') {
+        el.classList.remove('pop');
+        el.classList.add('stay');
+      }
+    });
+  }
+
+  function showLoveFinale() {
+    // Fade out all merits
+    meritEls.forEach(function(el, i) {
+      setTimeout(function() {
+        el.classList.remove('stay');
+        el.classList.add('fadeout');
+      }, i * 15); // staggered fadeout
+    });
+
+    // Remove merit elements after fade
+    setTimeout(function() {
+      meritEls.forEach(function(el) {
+        if (el.parentNode) el.parentNode.removeChild(el);
+      });
+    }, 900);
+
+    // Fade out main title
+    setTimeout(function() {
+      mainTitle.style.transition = 'opacity 0.6s, transform 0.6s';
+      mainTitle.style.opacity = '0';
+      mainTitle.style.transform = 'translate(-50%, -50%) scale(0.5)';
+    }, 300);
+
+    // Show "我爱你"
+    setTimeout(function() {
+      loveText.classList.add('show');
+
+      // Create particles from center
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      createParticles(vw / 2, vh / 2);
+
+      // Extra burst of petals
+      for (let i = 0; i < 20; i++) {
+        setTimeout(function() { createPetal(); }, i * 100);
+      }
+    }, 800);
+
+    // Continuous particles
+    setTimeout(function() {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      createParticles(vw / 2, vh / 2);
+    }, 2500);
+
+    // Subtle love pulse
+    setInterval(function() {
+      if (loveText.classList.contains('show')) {
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        for (let i = 0; i < 5; i++) {
+          setTimeout(function() { createPetal(); }, i * 200);
+        }
+      }
+    }, 5000);
+  }
+
+  // ---- Start on load ----
+  window.addEventListener('load', function() {
+    setTimeout(startAnimation, 600);
+  });
+
+  // ---- Handle window resize ----
+  window.addEventListener('resize', function() {
+    // Keep title centered — handled by CSS
+  });
+
+})();
+</script>
+</body>
+</html>
