@@ -121,14 +121,57 @@
     50% { transform: translateY(-8px) scale(1.05); }
   }
 
+  .merit.glow {
+    animation: meritGlow 1.8s ease-in-out forwards;
+  }
+
+  @keyframes meritGlow {
+    0% { opacity: 1; transform: scale(1); text-shadow: 0 0 0px rgba(255, 105, 180, 0); }
+    60% { opacity: 1; transform: scale(1.2); text-shadow: 0 0 25px rgba(255, 105, 180, 0.9), 0 0 50px rgba(255, 20, 147, 0.5); color: #ff1493; }
+    100% { opacity: 0; transform: scale(1.5); text-shadow: 0 0 60px rgba(255, 20, 147, 1), 0 0 100px rgba(255, 105, 180, 0.8); color: #ff69b4; }
+  }
+
   .merit.fadeout {
-    animation: meritFadeOut 0.8s ease-in forwards;
+    animation: meritFadeOut 0.9s ease-in forwards;
   }
 
   @keyframes meritFadeOut {
     0% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.5; transform: scale(1.3); }
     100% { opacity: 0; transform: scale(0) rotate(30deg); }
+  }
+
+  /* Background overlay for transition */
+  .bg-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 90;
+    background: radial-gradient(circle at center, rgba(255,182,193,0.5) 0%, rgba(255,192,203,0) 70%);
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+  }
+
+  .bg-overlay.active {
+    opacity: 1;
+  }
+
+  .bg-whiten {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 95;
+    background: white;
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
+  }
+
+  .bg-whiten.active {
+    opacity: 0.7;
   }
 
   /* Love you text */
@@ -220,6 +263,8 @@
 
 <div class="love-text" id="loveText">我爱你</div>
 
+<div class="bg-overlay" id="bgOverlay"></div>
+<div class="bg-whiten" id="bgWhiten"></div>
 <div class="counter" id="counter"></div>
 
 <script>
@@ -234,7 +279,7 @@
     '才华横溢', '多才多艺', '知书达理', '蕙质兰心', '温婉可人', '甜美可人', '楚楚动人',
     '明眸皓齿', '笑靥如花', '国色天香', '倾国倾城', '沉鱼落雁', '闭月羞花', '天生丽质',
     '眉清目秀', '亭亭玉立', '风姿绰约', '仪态万方', '温文尔雅', '落落大方', '秀外慧中',
-    '善解人意', '心思细腻', '观察入微', '见微知著', '随机应变', '处变不惊', '从容不迫',
+    '心思细腻', '观察入微', '随机应变', '处变不惊', '从容不迫',
     '泰然自若', '胸有成竹', '运筹帷幄', '高瞻远瞩', '深谋远虑', '独具慧眼', '别出心裁',
     '奇思妙想', '创意无限', '天马行空', '不拘一格', '独树一帜', '超凡脱俗', '与众不同',
     '独一无二', '无可替代', '完美无瑕', '光芒万丈', '璀璨夺目', '熠熠生辉', '光彩照人',
@@ -246,6 +291,8 @@
   const mainTitle = document.getElementById('mainTitle');
   const loveText = document.getElementById('loveText');
   const counter = document.getElementById('counter');
+  const bgOverlay = document.getElementById('bgOverlay');
+  const bgWhiten = document.getElementById('bgWhiten');
 
   // Keep track of created merit elements and occupied positions
   const meritEls = [];
@@ -389,13 +436,11 @@
 
   // ---- Main animation sequence ----
   function startAnimation() {
-    // Show counter
     counter.textContent = '0 / ' + total;
     counter.style.opacity = '1';
 
-    // Create all merit elements first, then animate them one by one
-    const delayBetween = 120; // ms between each merit appearing
-    const initialDelay = 800; // ms before first merit
+    const delayBetween = 120;
+    const initialDelay = 800;
 
     for (let i = 0; i < total; i++) {
       setTimeout(function() {
@@ -403,8 +448,14 @@
       }, initialDelay + i * delayBetween);
     }
 
-    // After all merits shown, wait then transition to "我爱你"
-    const totalTime = initialDelay + total * delayBetween + 1800;
+    // All merits shown: ~13 seconds in
+    // Wait 3.5s appreciation pause → 2s glow dissolve → 1.5s appear
+    const allShownTime = initialDelay + total * delayBetween;
+    const appreciationPause = 3500;  // let the viewer appreciate all 101 merits
+    const transitionTime = 2500;     // glow + dissolve phase
+    const totalTime = allShownTime + appreciationPause;
+
+    // Phase 1: after appreciation, begin the glow dissolve
     setTimeout(showLoveFinale, totalTime);
   }
 
@@ -461,60 +512,82 @@
   }
 
   function showLoveFinale() {
-    // Fade out all merits
+    // ======= PHASE 1: Pink overlay fades in (0-2s) =======
+    bgOverlay.classList.add('active');
+
+    // ======= PHASE 2: Merits glow brighter one by one, like taking a deep breath (1.5-3.5s) =======
     meritEls.forEach(function(el, i) {
       setTimeout(function() {
         el.classList.remove('stay');
-        el.classList.add('fadeout');
-      }, i * 15); // staggered fadeout
+        el.classList.add('glow');
+      }, i * 16);  // slower stagger: 101 * 16ms ≈ 1.6s wave
     });
 
-    // Remove merit elements after fade
+    // ======= PHASE 3: Title pulses, then white flash + all dissolve (2.5-3.5s) =======
+    setTimeout(function() {
+      // Title final strong pulse
+      mainTitle.style.transition = 'opacity 1s, transform 1s, text-shadow 1s';
+      mainTitle.style.textShadow = '0 0 60px rgba(255, 105, 180, 1), 0 0 120px rgba(255, 20, 147, 0.8)';
+      mainTitle.style.transform = 'translate(-50%, -50%) scale(1.15)';
+    }, 2200);
+
+    setTimeout(function() {
+      // White flash
+      bgWhiten.classList.add('active');
+      // Title shrinks and fades
+      mainTitle.style.opacity = '0';
+      mainTitle.style.transform = 'translate(-50%, -50%) scale(0.3)';
+    }, 2800);
+
+    setTimeout(function() {
+      bgWhiten.classList.remove('active');
+    }, 3400);
+
+    // ======= PHASE 4: Clean up (3.5s) =======
     setTimeout(function() {
       meritEls.forEach(function(el) {
         if (el.parentNode) el.parentNode.removeChild(el);
       });
-    }, 900);
+      mainTitle.style.display = 'none';
+    }, 3500);
 
-    // Fade out main title
+    // ======= PHASE 5: "我爱你" appears (4s) =======
     setTimeout(function() {
-      mainTitle.style.transition = 'opacity 0.6s, transform 0.6s';
-      mainTitle.style.opacity = '0';
-      mainTitle.style.transform = 'translate(-50%, -50%) scale(0.5)';
-    }, 300);
-
-    // Show "我爱你"
-    setTimeout(function() {
+      bgOverlay.classList.remove('active');
       loveText.classList.add('show');
 
-      // Create particles from center
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      createParticles(vw / 2, vh / 2);
+      const cx = window.innerWidth / 2;
+      const cy = window.innerHeight / 2;
+      createParticles(cx, cy);
 
-      // Extra burst of petals
-      for (let i = 0; i < 20; i++) {
-        setTimeout(function() { createPetal(); }, i * 100);
+      // Massive petal burst
+      for (let i = 0; i < 30; i++) {
+        setTimeout(function() { createPetal(); }, i * 60);
       }
-    }, 800);
+    }, 4000);
 
-    // Continuous particles
+    // Second wave of particles
     setTimeout(function() {
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      createParticles(vw / 2, vh / 2);
-    }, 2500);
+      const cx = window.innerWidth / 2;
+      const cy = window.innerHeight / 2;
+      createParticles(cx, cy);
+    }, 5200);
 
-    // Subtle love pulse
-    setInterval(function() {
+    // Third wave
+    setTimeout(function() {
+      const cx = window.innerWidth / 2;
+      const cy = window.innerHeight / 2;
+      createParticles(cx, cy);
+    }, 6400);
+
+    // Ongoing gentle petals
+    const petalInterval = setInterval(function() {
       if (loveText.classList.contains('show')) {
-        const vw = window.innerWidth;
-        const vh = window.innerHeight;
-        for (let i = 0; i < 5; i++) {
-          setTimeout(function() { createPetal(); }, i * 200);
+        for (let i = 0; i < 3; i++) {
+          setTimeout(function() { createPetal(); }, i * 300);
         }
       }
-    }, 5000);
+    }, 4000);
   }
 
   // ---- Start on load ----
